@@ -1,5 +1,5 @@
 -- Create Player Table
-CREATE OR REPLACE TABLE Player (
+CREATE TABLE Player (
     player_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     player_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL
@@ -14,7 +14,7 @@ CREATE TABLE Event (
     description TEXT,
     team_sheet TEXT,
     PRIMARY KEY (event_id, event_date)
-)   PARTITION BY HASH(TO_DAYS(event_date)) 
+)   PARTITION BY HASH(TO_DAYS(event_date))
   PARTITIONS 5;
 
 -- Create Event Attendance Table
