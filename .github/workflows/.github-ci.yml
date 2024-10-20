@@ -29,6 +29,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: List files in root directory
+        run: |
+          ls -all
+
       - name: Wait for MySql to be ready
         run: |
           sleep 15
@@ -47,4 +51,4 @@ jobs:
 
       - name: Validate SQL syntax
         run: |
-          mysql -h 127.0.0.1 -u root --execute="source db_setup.sql;"
+          mysql -h 127.0.0.1 -u root --execute="source ../db_setup.sql;"
