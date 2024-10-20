@@ -12,11 +12,30 @@ jobs:
   validate-sql:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Wait for MySql to be ready
+        run: |
+          until mysqladmin ping -h 127.0.0.1 --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 5
+          done
+
       - name: Validate SQL syntax
         run: |
-          docker run --rm -v ${{ github.workspace }}:/sql-files mysql:5.7 \
-          sh -c "mysql --user=root --password=rootpassword --execute='source db_setup.sql;'"
+          mysql -h 127.0.0.1 -u root -p rootpassword  --execute="source db_setup.sql;"
