@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS db_setup;
+
+USE db_setup;
+
 -- Create Player Table
 CREATE TABLE Player (
     player_id INTEGER PRIMARY KEY AUTO_INCREMENT,
