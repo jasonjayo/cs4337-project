@@ -16,7 +16,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
           - 3306:3306
         options: >-
@@ -34,7 +34,7 @@ jobs:
           sleep 15
           until mysqladmin ping -h 127.0.0.1 --silent; do
             echo "Waiting for MySQL to be ready..."
-            sleep 5
+            sleep 10
           done
 
       - name: Check MySQL Logs
@@ -43,8 +43,8 @@ jobs:
 
       - name: Test MySQL Connection
         run: |
-          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "SELECT 1;"
+          mysql -h 127.0.0.1 -u root -e "SELECT 1;"
 
       - name: Validate SQL syntax
         run: |
-          mysql -h 127.0.0.1 -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }}  --execute="source db_setup.sql;"
+          mysql -h 127.0.0.1 -u root --execute="source db_setup.sql;"
