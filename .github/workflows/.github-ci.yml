@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - dev1
   pull_request:
     branches:
       - main
+      - dev1
 
 jobs:
   validate-sql:
