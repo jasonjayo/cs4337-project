@@ -18,7 +18,7 @@ CREATE TABLE Event (
     description TEXT,
     team_sheet TEXT,
     PRIMARY KEY (event_id, event_date)
-)
+);
 --     PARTITION BY HASH(TO_DAYS(event_date))
 --   PARTITIONS 5;
 
