@@ -1,0 +1,56 @@
+name: Linter
+#test
+on:
+  push:
+    branches:
+      - main
+      - dev1
+  pull_request:
+    branches:
+      - main
+      - dev1
+
+jobs:
+  validate-sql:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0.40
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=20s
+          --health-timeout=10s
+          --health-retries=6
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: List files in root directory
+        run: |
+          ls -all
+
+      - name: Wait for MySql to be ready
+        run: |
+          sleep 15
+          until mysqladmin ping -h 127.0.0.1 --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 10
+          done
+
+      - name: Check MySQL Logs
+        run: |
+          docker logs $(docker ps -q --filter "name=mysql")
+
+      - name: Test MySQL Connection
+        run: |
+          mysql -h 127.0.0.1 -u root -e "SELECT 1;"
+
+      - name: Validate SQL syntax
+        run: |
+          mysql -h 127.0.0.1 -u root --execute="source db_setup.sql;"
