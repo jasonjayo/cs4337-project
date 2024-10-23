@@ -1,12 +1,14 @@
 name: Linter
-
+#test
 on:
   push:
     branches:
       - main
+      - dev1
   pull_request:
     branches:
       - main
+      - dev1
 
 jobs:
   validate-sql:
@@ -14,7 +16,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:8.0.40
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
