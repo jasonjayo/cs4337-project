@@ -21,15 +21,9 @@ jobs:
         run: |
           docker compose -f docker-compose.yml up -d
 
-      - name: Wait for MySQL to be healthy
-        run: |
-          sleep 15
-          until [ "`docker inspect -f {{.State.Health.Status}} cs4337-project-mysql-1`" == "healthy" ]; do
-          sleep 10;
-          done
-
       - name: Run SQL file
         run: |
+          sleep 25
           docker exec -i $(docker ps -q --filter name=mysql) cs4337-project-mysql-1 -u root -p1234 soccer_app < ../db_setup.sql
 
       - name: Clean up
