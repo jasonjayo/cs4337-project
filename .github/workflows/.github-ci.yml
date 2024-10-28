@@ -31,9 +31,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check if port 3307 is in use
+      - name: Remove Docker container on port 3307
         run: |
-          docker ps --filter publish=3307
+          if [ "$(docker ps -q --filter publish=3307)" ]; then
+            echo "Stopping container using port 3307..."
+            docker stop $(docker ps -q --filter publish=3307)
+          fi
 
       - name: Run Docker Compose
         run: |
