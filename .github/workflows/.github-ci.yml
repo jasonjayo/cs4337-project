@@ -1,14 +1,13 @@
 name: Linter
-#test
 on:
   push:
     branches:
       - main
-      - dev1
+      - CI/CD
   pull_request:
     branches:
       - main
-      - dev1
+      - CI/CD
 
 jobs:
   validate-sql:
@@ -31,10 +30,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List files in root directory
-        run: |
-          ls -all
-
       - name: Wait for MySql to be ready
         run: |
           sleep 15
@@ -42,14 +37,6 @@ jobs:
             echo "Waiting for MySQL to be ready..."
             sleep 10
           done
-
-      - name: Check MySQL Logs
-        run: |
-          docker logs $(docker ps -q --filter "name=mysql")
-
-      - name: Test MySQL Connection
-        run: |
-          mysql -h 127.0.0.1 -u root -e "SELECT 1;"
 
       - name: Validate SQL syntax
         run: |
