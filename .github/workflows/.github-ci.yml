@@ -33,7 +33,7 @@ jobs:
 
       - name: Run Docker Compose
         run: |
-          docker-compose -f docker-compose.yml up -d
+          docker compose -f docker-compose.yml up -d
 
       - name: Wait for MySQL to be healthy
         run: |
@@ -49,4 +49,4 @@ jobs:
       - name: Clean up
         if: always()
         run: |
-          docker-compose down
+          docker compose down
