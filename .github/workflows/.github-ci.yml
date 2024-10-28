@@ -13,30 +13,9 @@ jobs:
   validate-sql:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: 1234
-          MYSQL_DATABASE: soccer_app
-        ports:
-          - 3307:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=20s
-          --health-timeout=10s
-          --health-retries=6
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Remove Docker container on port 3307
-        run: |
-          if [ "$(docker ps -q --filter publish=3307)" ]; then
-            echo "Stopping container using port 3307..."
-            docker stop $(docker ps -q --filter publish=3307)
-          fi
 
       - name: Run Docker Compose
         run: |
