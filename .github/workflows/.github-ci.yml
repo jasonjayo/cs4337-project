@@ -23,6 +23,7 @@ jobs:
 
       - name: Run SQL file
         run: |
+          sleep 20
           docker exec -i $(docker ps -q --filter name=cs4337-project-mysql-1) mysql -u root -p1234 soccer_app < db_setup.sql
 
       - name: Clean up
