@@ -26,6 +26,16 @@ jobs:
           sleep 20
           docker exec -i $(docker ps -q --filter name=cs4337-project-mysql-1) mysql -u root -p1234 soccer_app < db_setup.sql
 
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+
+      - name: Verify Java syntax
+        run: |
+          find . -name "*.java" -print | xargs javac -d bin
+
       - name: Clean up
         if: always()
         run: |
