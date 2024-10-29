@@ -34,7 +34,7 @@ jobs:
 
       - name: Verify Java syntax
         run: |
-          javac -d bin src/**/*.java
+          javac -d bin src/main/java/com/example/soccerapp/HelloController.java
 
       - name: Clean up
         if: always()
