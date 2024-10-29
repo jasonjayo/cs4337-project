@@ -34,7 +34,7 @@ jobs:
 
       - name: Verify Java syntax
         run: |
-          find . -name "*.java" -print | xargs javac -d bin
+          javac -d bin src/**/*.java
 
       - name: Clean up
         if: always()
