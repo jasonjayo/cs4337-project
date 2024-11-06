@@ -10,7 +10,7 @@ on:
       - CI/CD
 
 jobs:
-  validate-sql:
+  validate-syntax:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,10 +38,6 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew build --info
-
-      - name: Verify Java syntax
-        run: |
-          javac -d bin src/main/java/com/example/soccerapp/HelloController.java
 
       - name: Clean up
         if: always()
