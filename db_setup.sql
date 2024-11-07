@@ -11,13 +11,18 @@ CREATE TABLE players (
 
 -- Create Event Table
 CREATE TABLE events (
-    event_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    event_id INT AUTO_INCREMENT PRIMARY KEY,
     event_type VARCHAR(50) NOT NULL,
     event_date DATETIME NOT NULL,
-    location VARCHAR(100) NOT NULL,
+    location VARCHAR(255),
     description TEXT,
-    team_sheet TEXT
+    team_sheet TEXT,
+    title VARCHAR(255),
+    start_time DATETIME,
+    end_time DATETIME,
+    team_id BIGINT
 );
+
 --     PARTITION BY HASH(TO_DAYS(event_date))
 --   PARTITIONS 5;
 
