@@ -1,5 +1,6 @@
 package com.example.playerservice.controller;
 
+import com.example.playerservice.dto.TeamDTO;
 import com.example.playerservice.model.Player;
 import com.example.playerservice.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,14 @@ public class PlayerController {
         playerService.deletePlayer(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/teams")
+    public List<TeamDTO> getTeams() {
+        return playerService.getAllTeams();
+    }
+
+//    public List<TeamDTO> getTeamsForPlayer(Player player) {
+//        return teamClient.getTeamsByIds(new ArrayList<>(player.getTeamIds()));
+//    }
 
 }
