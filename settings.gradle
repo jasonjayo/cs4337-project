@@ -1,5 +1,6 @@
 rootProject.name = 'soccer-app'
 
 include 'player-service'
-include 'bookings-service'
+include 'team-service'
+include 'eureka-service'
 include 'event-service'

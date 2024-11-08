@@ -7,7 +7,10 @@ services:
     ports:
       - "3307:3306"
 
-  adminer:
-    image: adminer
+  phpmyadmin:
+    image: phpmyadmin
     ports:
-      - "8080:8080"
+      - "8080:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      PMA_HOST: mysql

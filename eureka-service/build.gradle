@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.5'
+    id 'org.springframework.boot' version '3.3.5' // Ensure this matches your required version
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(23)
+        languageVersion = JavaLanguageVersion.of(23) // Change as needed
     }
 }
 
@@ -18,7 +18,7 @@ repositories {
 }
 
 ext {
-    springCloudVersion = "2023.0.2"
+    springCloudVersion = "2023.0.2" // Set the Spring Cloud version compatible with Spring Boot 3.x
 }
 
 dependencyManagement {
@@ -28,16 +28,22 @@ dependencyManagement {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // Eureka Server Dependency
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Web Dependency (optional if you want to create REST APIs or a web interface)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Lombok for reducing boilerplate code
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
-    implementation 'mysql:mysql-connector-java:8.0.33'
+
+    // Development tools for easier development experience
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {

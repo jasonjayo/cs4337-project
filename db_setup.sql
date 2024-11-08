@@ -8,6 +8,25 @@ CREATE TABLE players (
     player_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL
 );
+CREATE TABLE managers
+(
+    manager_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100)
+);
+
+CREATE TABLE teams (
+    team_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    team_name VARCHAR(100) NOT NULL,
+    manager INTEGER NOT NULL ,
+    FOREIGN KEY (manager) REFERENCES managers(manager_id)
+);
+
+CREATE TABLE player_team (
+    player_id INTEGER,
+    team_id INTEGER,
+    FOREIGN KEY (player_id) REFERENCES players(player_id),
+    FOREIGN KEY (team_id) REFERENCES teams(team_id)
+);
 
 -- Create Event Table
 CREATE TABLE events (

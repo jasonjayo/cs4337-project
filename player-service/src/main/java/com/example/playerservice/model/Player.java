@@ -20,4 +20,8 @@ public class Player {
     @Column(name="email")
     private String email;
 
+//    @ElementCollection
+//    @CollectionTable(name = "player_team", joinColumns = @JoinColumn(name = "player_id"))
+//    @Column(name = "team_id")
+//    private Set<Long> teamIds;
 }
