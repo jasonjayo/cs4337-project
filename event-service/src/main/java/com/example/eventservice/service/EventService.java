@@ -78,6 +78,7 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    //TODO: fix name retrieval
     private String getPlayerName(Long playerId) {
         try {
             return playerClient.getPlayerName(playerId);

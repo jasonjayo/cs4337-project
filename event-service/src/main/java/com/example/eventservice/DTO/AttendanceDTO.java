@@ -12,5 +12,13 @@ public class AttendanceDTO {
         this.status = status;
     }
 
-    // TODO: Getters and Setters
+    // Getters and Setters for playerId, playerName, and status
+    public Long getPlayerId() { return playerId; }
+    public void setPlayerId(Long playerId) { this.playerId = playerId; }
+
+    public String getPlayerName() { return playerName; }
+    public void setPlayerName(String playerName) { this.playerName = playerName; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
