@@ -1,5 +1,6 @@
 package com.example.eventservice.controller;
 
+import com.example.eventservice.DTO.AttendanceDTO;
 import com.example.eventservice.model.Event;
 import com.example.eventservice.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,22 @@ public class EventController {
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Endpoint to update or mark a player's attendance status for a specific event
+    @PostMapping("/{eventId}/attendance/{playerId}")
+    public ResponseEntity<String> updateAttendance(
+            @PathVariable Long eventId,
+            @PathVariable Long playerId,
+            @RequestParam("status") String status) {
+        eventService.updateAttendance(eventId, playerId, status);
+        return ResponseEntity.ok("Attendance status updated successfully.");
+    }
+
+    // Endpoint to retrieve attendance for a specific event
+    @GetMapping("/{eventId}/attendance")
+    public ResponseEntity<List<AttendanceDTO>> getAttendanceByEvent(@PathVariable Long eventId) {
+        List<AttendanceDTO> attendanceList = eventService.getAttendanceByEvent(eventId);
+        return ResponseEntity.ok(attendanceList);
     }
 }

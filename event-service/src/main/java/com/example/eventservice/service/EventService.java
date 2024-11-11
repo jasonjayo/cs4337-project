@@ -1,18 +1,34 @@
 package com.example.eventservice.service;
-import com.example.eventservice.repository.EventRepository;
 
+import com.example.eventservice.client.PlayerClient;
+import com.example.eventservice.DTO.AttendanceDTO;
+import com.example.eventservice.DTO.PlayerDTO;
+import com.example.eventservice.model.Attendance;
+import com.example.eventservice.repository.AttendanceRepository;
+import com.example.eventservice.repository.EventRepository;
 import com.example.eventservice.model.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private AttendanceRepository attendanceRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(EventService.class);
+
+    @Autowired
+    private PlayerClient playerClient;
 
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
@@ -42,6 +58,32 @@ public class EventService {
             return eventRepository.save(existingEvent);
         } else {
             return null;
+        }
+    }
+
+    public void updateAttendance(Long eventId, Long playerId, String status) {
+        Attendance attendance = attendanceRepository.findByEventIdAndPlayerId(eventId, playerId)
+                .orElse(new Attendance(eventId, playerId));
+        attendance.setStatus(status);
+        attendanceRepository.save(attendance);
+    }
+
+    public List<AttendanceDTO> getAttendanceByEvent(Long eventId) {
+        List<Attendance> attendances = attendanceRepository.findByEventId(eventId);
+        return attendances.stream()
+                .map(attendance -> {
+                    String playerName = getPlayerName(attendance.getPlayerId());
+                    return new AttendanceDTO(attendance.getPlayerId(), playerName, attendance.getStatus());
+                })
+                .collect(Collectors.toList());
+    }
+
+    private String getPlayerName(Long playerId) {
+        try {
+            return playerClient.getPlayerName(playerId);
+        } catch (Exception e) {
+            logger.error("Error fetching player name for playerId {}: {}", playerId, e.getMessage());
+            return "Unknown";
         }
     }
 }
