@@ -39,14 +39,14 @@ CREATE TABLE events (
     title VARCHAR(255),
     start_time DATETIME,
     end_time DATETIME,
-    team_id BIGINT
+    team_id INTEGER
 );
 
 -- Create Event Attendance Table
 CREATE TABLE attendance (
-    attendance_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    player_id BIGINT NOT NULL,
-    event_id BIGINT NOT NULL,
+    attendance_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    player_id INTEGER NOT NULL,
+    event_id INTEGER NOT NULL,
     status VARCHAR(50) NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (player_id) REFERENCES players(player_id),
