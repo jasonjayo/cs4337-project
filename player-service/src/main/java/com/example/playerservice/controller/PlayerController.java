@@ -50,8 +50,11 @@ public class PlayerController {
         return playerService.getAllTeams();
     }
 
-//    public List<TeamDTO> getTeamsForPlayer(Player player) {
-//        return teamClient.getTeamsByIds(new ArrayList<>(player.getTeamIds()));
-//    }
+
+    @GetMapping("/{playerId}/name")
+    public ResponseEntity<String> getPlayerName(@PathVariable Long playerId) {
+        Optional<Player> player = playerService.getPlayerById(playerId);
+        return player.map(p -> ResponseEntity.ok(p.getName())).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown"));
+    }
 
 }
