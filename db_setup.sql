@@ -39,18 +39,16 @@ CREATE TABLE events (
     title VARCHAR(255),
     start_time DATETIME,
     end_time DATETIME,
-    team_id BIGINT
+    team_id INTEGER
 );
 
---     PARTITION BY HASH(TO_DAYS(event_date))
---   PARTITIONS 5;
-
 -- Create Event Attendance Table
-CREATE TABLE event_attendances (
+CREATE TABLE attendance (
     attendance_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     player_id INTEGER NOT NULL,
     event_id INTEGER NOT NULL,
     status VARCHAR(50) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (player_id) REFERENCES players(player_id),
     FOREIGN KEY (event_id) REFERENCES events(event_id)
 );
