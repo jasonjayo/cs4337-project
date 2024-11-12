@@ -20,6 +20,10 @@ public class Player {
     @Column(name="email")
     private String email;
 
+    public String getName() {
+        return playerName;
+    }
+
 //    @ElementCollection
 //    @CollectionTable(name = "player_team", joinColumns = @JoinColumn(name = "player_id"))
 //    @Column(name = "team_id")
