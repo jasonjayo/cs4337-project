@@ -1,7 +1,7 @@
-package com.example.manager.service;
+package com.example.managerservice.service;
 
-import com.example.manager.model.Manager;
-import com.example.manager.repository.ManagerRepository;
+import com.example.managerservice.model.Manager;
+import com.example.managerservice.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

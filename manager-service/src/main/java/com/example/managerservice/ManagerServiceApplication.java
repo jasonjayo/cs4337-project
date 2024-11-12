@@ -1,4 +1,4 @@
-package com.example.manager;
+package com.example.managerservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

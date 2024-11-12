@@ -1,4 +1,4 @@
-package com.example.manager.model;
+package com.example.managerservice.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,6 +1,6 @@
-package com.example.manager.repository;
+package com.example.managerservice.repository;
 
-import com.example.manager.model.Manager;
+import com.example.managerservice.model.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
