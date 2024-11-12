@@ -1,7 +1,7 @@
-package com.example.manager.service.controller;
+package com.example.managerservice.controller;
 
-import com.example.manager.service.model.Manager;
-import com.example.manager.service.service.ManagerService;
+import com.example.managerservice.model.Manager;
+import com.example.managerservice.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
