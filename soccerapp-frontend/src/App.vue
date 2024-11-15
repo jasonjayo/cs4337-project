@@ -1,54 +1,37 @@
 <template>
-  <div id="app">
-    <!-- 导航栏可以保留在这里 -->
-    <!-- <header>
-      <nav class="navbar">
-        <ul class="nav-links">
-          <li><router-link to="/" class="nav-button">Home</router-link></li>
-          <li><router-link to="/team" class="nav-button">Team</router-link></li> -->
-    <!-- 其他导航链接 -->
-    <!-- </ul>
-      </nav>
-    </header> -->
-    <header>
-      <nav class="navbar">
-        <div class="logo">
-          <img
-            alt="Club Logo"
-            class="logo"
-            src="@/assets/logo.png"
-            style="width: 100px; height: auto"
-          />
-          <span>Soccer Club</span>
-        </div>
-        <ul class="nav-links">
-          <li><router-link to="/" class="nav-button">Home</router-link></li>
-          <li>
-            <router-link to="/dashboard" class="nav-button"
-              >Dashboard</router-link
-            >
-          </li>
-          <li>
-            <router-link to="/schedule" class="nav-button"
-              >Training Schedule</router-link
-            >
-          </li>
-          <li>
-            <router-link to="/news" class="nav-button"
-              >News & Events</router-link
-            >
-          </li>
-          <li><router-link to="/team" class="nav-button">Team</router-link></li>
-          <li>
-            <button @click="loginWithGoogle" class="login-button">Login</button>
-          </li>
-        </ul>
-      </nav>
-    </header>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img
+          alt="Club Logo"
+          class="logo"
+          src="@/assets/logo.png"
+          style="width: 100px; height: auto"
+        />
+        <!-- <span>Soccer App</span> -->
+      </div>
+      <ul class="nav-links">
+        <li><router-link to="/" class="nav-button">Home</router-link></li>
+        <li>
+          <router-link to="/dashboard" class="nav-button"
+            >Dashboard</router-link
+          >
+        </li>
+        <li>
+          <router-link to="/schedule" class="nav-button"
+            >Training Schedule</router-link
+          >
+        </li>
+        <li>
+          <router-link to="/news" class="nav-button">News & Events</router-link>
+        </li>
+        <li><router-link to="/team" class="nav-button">Team</router-link></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- 用于显示不同路由的内容 -->
-    <router-view />
-  </div>
+  <!-- 用于显示不同路由的内容 -->
+  <router-view />
 </template>
 
 <script>

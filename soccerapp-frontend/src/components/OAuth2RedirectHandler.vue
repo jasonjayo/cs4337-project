@@ -7,16 +7,14 @@ export default {
   name: "OAuth2RedirectHandler",
   mounted() {
     const searchParams = new URLSearchParams(window.location.search);
-    const token = searchParams.get("token");
+    const token = searchParams.get("token"),
+      profilePic = searchParams.get("profile_pic");
 
     if (token) {
-      // Store the token in localStorage for use in API calls
       localStorage.setItem("jwtToken", token);
-
-      // Redirect to a protected page (e.g., dashboard)
-      this.$router.push("/team");
+      localStorage.setItem("profilePic", profilePic);
+      this.$router.push("/dashboard");
     } else {
-      // Redirect to login if there's an error or no token
       this.$router.push("/login");
     }
   },
