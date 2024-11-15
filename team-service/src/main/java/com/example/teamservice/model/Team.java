@@ -13,10 +13,13 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long teamId;
 
-    @Column(name="team_name")
+    @Column(name = "team_name")
     private String teamName;
 
-    @Column(name="manager")
+    @Column(name = "manager")
     private String manager;
+
+    @Column(name = "pin")
+    private String pin;
 
 }
