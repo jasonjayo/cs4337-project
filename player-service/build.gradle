@@ -36,10 +36,13 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
     implementation 'mysql:mysql-connector-java:8.0.33'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation project(':shared-library')
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-core:3.9.0'
+
 }
 
 tasks.named('test') {
