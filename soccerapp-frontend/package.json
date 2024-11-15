@@ -1,0 +1,22 @@
+{
+  "name": "soccerclub",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-cli-service build",
+    "preview": "vite preview",
+    "serve": "vue-cli-service serve",
+    "test": "vue-cli-service test"
+  },
+  "dependencies": {
+    "jwt-decode": "^4.0.0",
+    "vue": "^3.5.12",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "vite": "^5.4.8"
+  }
+}
