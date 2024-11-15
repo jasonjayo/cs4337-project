@@ -10,7 +10,7 @@ services:
   phpmyadmin:
     image: phpmyadmin
     ports:
-      - "8080:80"
+      - "8070:80"
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       PMA_HOST: mysql

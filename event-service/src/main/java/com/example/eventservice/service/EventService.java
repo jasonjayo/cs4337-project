@@ -19,14 +19,11 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
 
+    private static final Logger logger = LoggerFactory.getLogger(EventService.class);
     @Autowired
     private EventRepository eventRepository;
-
     @Autowired
     private AttendanceRepository attendanceRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(EventService.class);
-
     @Autowired
     private PlayerClient playerClient;
 
@@ -86,5 +83,9 @@ public class EventService {
             logger.error("Error fetching player name for playerId {}: {}", playerId, e.getMessage());
             return "Unknown";
         }
+    }
+
+    public List<Event> getEventsForTeam(Long teamId) {
+        return eventRepository.findByTeamId(teamId);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.playerservice.controller;
 
-import com.example.playerservice.dto.TeamDTO;
 import com.example.playerservice.model.Player;
 import com.example.playerservice.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +33,12 @@ public class PlayerController {
         return player.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/googleId/{id}")
+    public ResponseEntity<Player> getPlayerGoogleId(@PathVariable String id) {
+        Optional<Player> player = playerService.getPlayerByGoogleId(id);
+        return player.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
         Player createdPlayer = playerService.savePlayer(player);
@@ -45,16 +51,16 @@ public class PlayerController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/teams")
-    public List<TeamDTO> getTeams() {
-        return playerService.getAllTeams();
-    }
-
-
     @GetMapping("/{playerId}/name")
     public ResponseEntity<String> getPlayerName(@PathVariable Long playerId) {
         Optional<Player> player = playerService.getPlayerById(playerId);
         return player.map(p -> ResponseEntity.ok(p.getName())).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown"));
+    }
+
+    @PostMapping("/{playerId}/teams/{teamId}")
+    public boolean addTeamToPlayer(@PathVariable Long playerId, @PathVariable Long teamId, @RequestBody Map<String, String> requestBody) {
+        String pin = requestBody.get("pin");
+        return playerService.addPlayerToTeam(playerId, teamId, pin);
     }
 
 }

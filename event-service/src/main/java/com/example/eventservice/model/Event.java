@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "events")
 public class Event {
 
     @Id
@@ -24,5 +26,6 @@ public class Event {
     private String title;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    @Column(name = "team_id", nullable = false)
     private Long teamId;
 }

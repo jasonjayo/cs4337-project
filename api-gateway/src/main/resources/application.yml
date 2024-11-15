@@ -22,6 +22,11 @@ spring:
           predicates:
             - Path=/oauth2/**
 
+        - id: event-service
+          uri: lb://EVENT-SERVICE
+          predicates:
+            - Path=/api/events/**
+
 eureka:
   client:
     service-url:
