@@ -1,7 +1,24 @@
-package com.example.playerservice.dto;
+package com.example.shared.dto;
 
 public class TeamDTO {
     private Long teamId;
+    private String pin;
+    private String teamName;
+    private String manager;
+
+    // Constructors, getters, setters
+    public TeamDTO() {
+    }
+
+    public TeamDTO(Long id, String name, String manager) {
+        this.teamId = id;
+        this.teamName = name;
+        this.manager = manager;
+    }
+
+    public String getPin() {
+        return pin;
+    }
 
     public Long getTeamId() {
         return teamId;
@@ -14,19 +31,6 @@ public class TeamDTO {
     public String getManager() {
         return manager;
     }
-
-    private String teamName;
-    private String manager;
-
-    // Constructors, getters, setters
-    public TeamDTO() {}
-
-    public TeamDTO(Long id, String name, String manager) {
-        this.teamId = id;
-        this.teamName = name;
-        this.manager = manager;
-    }
-
 
 
 //    public Long getId() {

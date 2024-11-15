@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 @Table(name = "events", schema = "dbo")
+
 public class Event {
 
     @Id
@@ -38,7 +41,7 @@ public class Event {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
-
     @Column(name = "team_id")
+
     private Long teamId;
 }

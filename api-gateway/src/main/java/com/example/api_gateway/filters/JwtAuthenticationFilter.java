@@ -5,8 +5,9 @@ import io.jsonwebtoken.Claims;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -33,23 +34,24 @@ public class JwtAuthenticationFilter implements WebFilter {
                 Claims claims = JwtUtils.parseToken(token);
                 String username = claims.getSubject();
 
-                // set up auth token
+                // Set up auth token
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(username, null, null);
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContext securityContext = new SecurityContextImpl(authentication);
+
+                // Set the SecurityContext in the reactive context
+                return chain.filter(exchange)
+                        .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(securityContext)));
 
             } catch (Exception e) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
         } else {
-            // no token / invalid format
+            // No token / invalid format
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
-
-        // if authenticated
-        return chain.filter(exchange);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-        import java.util.List;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -64,5 +64,11 @@ public class EventController {
     public ResponseEntity<List<AttendanceDTO>> getAttendanceByEvent(@PathVariable Long eventId) {
         List<AttendanceDTO> attendanceList = eventService.getAttendanceByEvent(eventId);
         return ResponseEntity.ok(attendanceList);
+    }
+
+    @GetMapping("/team/{teamId}")
+    public ResponseEntity<List<Event>> getEventsForTeam(@PathVariable Long teamId) {
+        List<Event> events = eventService.getEventsForTeam(teamId);
+        return ResponseEntity.ok(events);
     }
 }
