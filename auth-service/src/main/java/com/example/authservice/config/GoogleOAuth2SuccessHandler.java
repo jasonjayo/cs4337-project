@@ -1,6 +1,9 @@
 package com.example.authservice.config;
 
+import com.example.shared.feign.PlayerClient;
 import com.example.authservice.util.JwtUtils;
+import feign.FeignException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -9,10 +12,18 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.util.Optional;
+
+import com.example.shared.dto.PlayerDTO;
+
 
 @Component
 public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler {
+
+    @Autowired
+    private PlayerClient playerClient;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -21,13 +32,33 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
 
             String email = token.getPrincipal().getAttributes().get("email").toString();
+            String first_name = token.getPrincipal().getAttributes().get("given_name").toString();
+            String google_id = token.getPrincipal().getAttributes().get("sub").toString();
+            String profile_pic = token.getPrincipal().getAttributes().get("picture").toString();
+
+
+            int player_id;
 
             try {
-                String jwtToken = JwtUtils.generateToken(email);
+                PlayerDTO existing_player = playerClient.getPlayerByGoogleId(google_id);
+                player_id = existing_player.getPlayerId();
+            } catch (FeignException.NotFound e) {
+                // Create PlayerDTO and send it to the player service
+                PlayerDTO playerDTO = new PlayerDTO();
+                playerDTO.setGoogleId(google_id);
+                playerDTO.setPlayerName(first_name);
+
+                // Call the player service to create a new player entry
+                PlayerDTO player = playerClient.createPlayer(playerDTO);
+                player_id = player.getPlayerId();
+            }
+
+            try {
+                String jwtToken = JwtUtils.generateToken(email, first_name, player_id);
 
                 // redirect to Vue frontend with JWT token
 //                response.sendRedirect("http://localhost:8084/home?token=" + jwtToken);
-                response.sendRedirect("http://localhost:5173/oauth2/redirect?token=" + jwtToken);
+                response.sendRedirect("http://localhost:5173/oauth2/redirect?token=" + jwtToken + "&profile_pic=" + profile_pic);
             } catch (Exception e) {
                 throw new ServletException("Error generating JWT token", e);
             }

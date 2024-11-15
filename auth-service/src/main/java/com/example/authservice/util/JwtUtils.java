@@ -12,13 +12,16 @@ public class JwtUtils {
 
     private static final String SECRET = "bf83d510d69b7a6db12aa6c4f2d51ad29945fcc70995041dc5affd897b9e33fc";
 
-    public static String generateToken(String email) throws Exception {
+    public static String generateToken(String email, String first_name, int id) throws Exception {
         JWSSigner signer = new MACSigner(SECRET);
+
 
         SignedJWT signedJWT = new SignedJWT(
                 new JWSHeader(JWSAlgorithm.HS256),
                 new com.nimbusds.jwt.JWTClaimsSet.Builder()
                         .subject(email)
+                        .claim("first_name", first_name)
+                        .claim("id", id)
                         .issuer("example.com")
                         .expirationTime(new Date(new Date().getTime() + 3600 * 1000)) // 1 hour expiry
                         .build()
