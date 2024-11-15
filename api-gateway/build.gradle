@@ -25,28 +25,26 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
 
+	// JJWT (remove if you decide to use Spring Security JWT)
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE' // You can also use Spring Security OAuth for JWT
-	implementation 'io.jsonwebtoken:jjwt:0.9.1' // For JWT utility (parsing, validation)
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	// OAuth2 and JWT support (remove if using JJWT instead)
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.security:spring-security-oauth2-client'
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // OAuth2 client support
-	implementation 'org.springframework.security:spring-security-oauth2-client' // Explicit OAuth2 client dependency (sometimes needed)
-	implementation 'org.springframework.security:spring-security-oauth2-jose' // For parsing JWT tokens
-
-
+	// Test dependencies
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test:3.4.0'
+	testImplementation 'org.mockito:mockito-core:3.9.0'
 }
+
 
 dependencyManagement {
 	imports {
