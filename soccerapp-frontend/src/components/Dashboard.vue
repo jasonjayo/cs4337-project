@@ -27,8 +27,8 @@
 
   <h2>Players</h2>
   <p>Here's a list of the players signed up to Soccer App.</p>
-  <ul v-for="player in players">
-    <li>{{ player.playerName }}</li>
+  <ul>
+    <li v-for="player in players">{{ player.playerName }}</li>
   </ul>
 </template>
 
