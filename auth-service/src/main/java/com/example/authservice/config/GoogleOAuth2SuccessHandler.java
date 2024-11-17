@@ -57,8 +57,8 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                 String jwtToken = JwtUtils.generateToken(email, first_name, player_id);
 
                 // redirect to Vue frontend with JWT token
-//                response.sendRedirect("http://localhost:8084/home?token=" + jwtToken);
-                response.sendRedirect("http://localhost:5173/oauth2/redirect?token=" + jwtToken + "&profile_pic=" + profile_pic);
+//                response.sendRedirect("http://127.0.0.1:8084/home?token=" + jwtToken);
+                response.sendRedirect("http://127.0.0.1:5173/oauth2/redirect?token=" + jwtToken + "&profile_pic=" + profile_pic);
             } catch (Exception e) {
                 throw new ServletException("Error generating JWT token", e);
             }

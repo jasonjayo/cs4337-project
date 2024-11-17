@@ -59,7 +59,7 @@ export default {
     this.first_name = first_name;
     this.id = decodedToken.id;
 
-    fetch("http://localhost:8080/api/teams", {
+    fetch("http://127.0.0.1:8080/api/teams", {
       headers: {
         Authorization: "Bearer " + this.token,
       },
@@ -67,7 +67,7 @@ export default {
       .then((res) => res.json())
       .then((teams) => (this.teams = teams));
 
-    fetch("http://localhost:8080/api/players", {
+    fetch("http://127.0.0.1:8080/api/players", {
       headers: {
         Authorization: "Bearer " + this.token,
       },
@@ -81,7 +81,7 @@ export default {
       const team_id = e.target.getAttribute("data-team-id");
       let pin = prompt("Enter team PIN to join:");
 
-      fetch(`http://localhost:8080/api/players/${this.id}/teams/${team_id}`, {
+      fetch(`http://127.0.0.1:8080/api/players/${this.id}/teams/${team_id}`, {
         headers: {
           Authorization: "Bearer " + this.token,
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default {
       });
     },
     getMyTeams() {
-      fetch(`http://localhost:8080/api/players/${this.id}`, {
+      fetch(`http://127.0.0.1:8080/api/players/${this.id}`, {
         headers: {
           Authorization: "Bearer " + this.token,
         },
@@ -107,7 +107,7 @@ export default {
     getMyEvents() {
       this.myEvents = [];
       this.myTeams.forEach((team) => {
-        fetch(`http://localhost:8080/api/events/team/${team.teamId}`, {
+        fetch(`http://127.0.0.1:8080/api/events/team/${team.teamId}`, {
           headers: {
             Authorization: "Bearer " + this.token,
           },
