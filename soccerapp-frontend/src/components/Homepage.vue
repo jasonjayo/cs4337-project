@@ -123,7 +123,7 @@ export default {
     loginWithGoogle() {
       // Google OAuth 2.0 login logic
       window.location.href =
-        "http://localhost:8080/oauth2/authorization/google";
+        "http://127.0.0.1:8080/oauth2/authorization/google";
     },
     joinUs() {
       // Logic to join the club, possibly a registration or contact page
