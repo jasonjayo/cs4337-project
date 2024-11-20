@@ -5,10 +5,10 @@ FROM openjdk:23
 WORKDIR /app
 
 # Copy the JAR file to the container
-COPY build/libs/player-service-0.0.1-SNAPSHOT.jar app.jar
+COPY build/libs/event-service-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your app runs on (e.g., 8080)
-EXPOSE 8081
+EXPOSE 8083
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
