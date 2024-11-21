@@ -1,56 +1,45 @@
 name: Linter
-#test
 on:
   push:
     branches:
       - main
-      - dev1
+      - CI/CD
   pull_request:
     branches:
       - main
-      - dev1
+      - CI/CD
 
 jobs:
-  validate-sql:
+  validate-syntax:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0.40
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=20s
-          --health-timeout=10s
-          --health-retries=6
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List files in root directory
+      - name: Run Docker Compose
         run: |
-          ls -all
+          docker compose -f docker-compose.yml up -d
 
-      - name: Wait for MySql to be ready
+      - name: Run SQL file
         run: |
-          sleep 15
-          until mysqladmin ping -h 127.0.0.1 --silent; do
-            echo "Waiting for MySQL to be ready..."
-            sleep 10
-          done
+          sleep 20
+          docker exec -i $(docker ps -q --filter name=cs4337-project-mysql-1) mysql -u root -p1234 soccer_app < db_setup.sql
 
-      - name: Check MySQL Logs
-        run: |
-          docker logs $(docker ps -q --filter "name=mysql")
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '23'
+          distribution: 'temurin'
 
-      - name: Test MySQL Connection
-        run: |
-          mysql -h 127.0.0.1 -u root -e "SELECT 1;"
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x gradlew
 
-      - name: Validate SQL syntax
+      - name: Build with Gradle
         run: |
-          mysql -h 127.0.0.1 -u root --execute="source db_setup.sql;"
+          ./gradlew build --info
+
+      - name: Clean up
+        if: always()
+        run: |
+          docker compose down
