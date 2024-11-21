@@ -13,6 +13,11 @@ java {
     }
 }
 
+tasks.register('wrapper', Wrapper) {
+    gradleVersion = '8.11'
+    distributionType = Wrapper.DistributionType.BIN
+}
+
 repositories {
     mavenCentral()
 }
