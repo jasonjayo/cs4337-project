@@ -32,4 +32,4 @@ eureka:
     service-url:
       defaultZone: http://host.docker.internal:8761/eureka/
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: false

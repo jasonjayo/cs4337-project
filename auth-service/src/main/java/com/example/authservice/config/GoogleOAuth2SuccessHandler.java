@@ -36,7 +36,6 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             String google_id = token.getPrincipal().getAttributes().get("sub").toString();
             String profile_pic = token.getPrincipal().getAttributes().get("picture").toString();
 
-
             int player_id;
 
             try {
@@ -56,9 +55,14 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             try {
                 String jwtToken = JwtUtils.generateToken(email, first_name, player_id);
 
-                // redirect to Vue frontend with JWT token
-//                response.sendRedirect("http://127.0.0.1:8084/home?token=" + jwtToken);
-                response.sendRedirect("http://127.0.0.1:5173/oauth2/redirect?token=" + jwtToken + "&profile_pic=" + profile_pic);
+                // Redirect to the frontend with the correct URL
+                // Using the frontend container name and port in the Docker setup
+                String frontendUrl = "http://127.0.0.1:5173/oauth2/redirect";
+
+                // Construct the redirection URL with JWT and profile picture
+                String redirectUrl = frontendUrl + "?token=" + jwtToken + "&profile_pic=" + profile_pic;
+
+                response.sendRedirect(redirectUrl);
             } catch (Exception e) {
                 throw new ServletException("Error generating JWT token", e);
             }
