@@ -1,4 +1,14 @@
-FROM openjdk:21-jdk
-VOLUME /tmp
-COPY build/libs/calendar-service-0.0.1-SNAPSHOT.jar calendar-service.jar
-ENTRYPOINT ["java","-jar","/calendar-service.jar"]
+# Use an official Java runtime as a parent image
+FROM openjdk:23
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the JAR file to the container
+COPY build/libs/team-service-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the port your app runs on (e.g., 8080)
+EXPOSE 8082
+
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
