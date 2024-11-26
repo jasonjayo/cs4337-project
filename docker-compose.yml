@@ -1,16 +1,81 @@
-services:
-  mysql:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: soccer_app
-    ports:
-      - "127.0.0.1:3307:3306"
+version: '3.9'
 
-  phpmyadmin:
-    image: phpmyadmin
+networks:
+  soccer-app-network:
+    driver: bridge
+
+services:
+  eureka-service:
+    build:
+      context: ./eureka-service
+      dockerfile: Dockerfile
+    container_name: eureka-service
+    networks:
+      - soccer-app-network
     ports:
-      - "127.0.0.1:8070:80"
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      PMA_HOST: mysql
+      - "8761:8761"
+
+  team-service:
+    build:
+      context: ./team-service
+      dockerfile: Dockerfile
+    container_name: team-service
+    networks:
+      - soccer-app-network
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-service
+
+  player-service:
+    build:
+      context: ./player-service
+      dockerfile: Dockerfile
+    container_name: player-service
+    networks:
+      - soccer-app-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-service
+
+  event-service:
+    build:
+      context: ./event-service
+      dockerfile: Dockerfile
+    container_name: event-service
+    networks:
+      - soccer-app-network
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka-service
+
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    networks:
+      - soccer-app-network
+    ports:
+      - "8084:8084"
+    depends_on:
+      - eureka-service
+      - player-service
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    networks:
+      - soccer-app-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-service
+      - auth-service
+      - event-service
+      - team-service
+      - player-service

@@ -27,10 +27,16 @@ dependencyManagement {
     }
 }
 
+tasks.register('wrapper', Wrapper) {
+    gradleVersion = '8.11'
+    distributionType = Wrapper.DistributionType.BIN
+}
+
 dependencies {
     // Eureka Server Dependency
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.boot:spring-boot-starter'
 
     // Web Dependency (optional if you want to create REST APIs or a web interface)
     implementation 'org.springframework.boot:spring-boot-starter-web'
