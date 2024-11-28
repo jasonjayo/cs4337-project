@@ -1,5 +1,3 @@
-version: '3.9'
-
 networks:
   soccer-app-network:
     driver: bridge
@@ -19,56 +17,75 @@ services:
     build:
       context: ./team-service
       dockerfile: Dockerfile
-    container_name: team-service
     networks:
       - soccer-app-network
-    ports:
-      - "8082:8082"
     depends_on:
       - eureka-service
+  #    deploy:
+  #      replicas: 2
+  #      resources:
+  #        limits:
+  #          cpus: "0.5"
+  #          memory: "512M"
+  #      restart_policy:
+  #        condition: on-failure
 
   player-service:
     build:
       context: ./player-service
       dockerfile: Dockerfile
-    container_name: player-service
     networks:
       - soccer-app-network
-    ports:
-      - "8081:8081"
     depends_on:
       - eureka-service
+  #    deploy:
+  #      replicas: 2
+  #      resources:
+  #        limits:
+  #          cpus: "0.5"
+  #          memory: "512M"
+  #      restart_policy:
+  #        condition: on-failure
 
   event-service:
     build:
       context: ./event-service
       dockerfile: Dockerfile
-    container_name: event-service
     networks:
       - soccer-app-network
-    ports:
-      - "8083:8083"
     depends_on:
       - eureka-service
+  #    deploy:
+  #      replicas: 2
+  #      resources:
+  #        limits:
+  #          cpus: "0.5"
+  #          memory: "512M"
+  #      restart_policy:
+  #        condition: on-failure
 
   auth-service:
     build:
       context: ./auth-service
       dockerfile: Dockerfile
-    container_name: auth-service
     networks:
       - soccer-app-network
-    ports:
-      - "8084:8084"
     depends_on:
       - eureka-service
       - player-service
+  #    deploy:
+  #      replicas: 2
+  #      resources:
+  #        limits:
+  #          cpus: "0.5"
+  #          memory: "512M"
+  #      restart_policy:
+  #        condition: on-failure
 
   api-gateway:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
-    container_name: api-gateway
     networks:
       - soccer-app-network
     ports:
