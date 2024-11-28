@@ -17,15 +17,6 @@
             >Dashboard</router-link
           >
         </li>
-        <li>
-          <router-link to="/schedule" class="nav-button"
-            >Training Schedule</router-link
-          >
-        </li>
-        <li>
-          <router-link to="/news" class="nav-button">News & Events</router-link>
-        </li>
-        <li><router-link to="/team" class="nav-button">Team</router-link></li>
       </ul>
     </nav>
   </header>
