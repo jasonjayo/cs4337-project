@@ -1,7 +1,9 @@
 package com.example.playerservice.controller;
 
 import com.example.playerservice.model.Player;
+import com.example.playerservice.repository.PlayerRepository;
 import com.example.playerservice.service.PlayerService;
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/players")
@@ -18,7 +21,7 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @Autowired
-    public PlayerController(PlayerService playerService) {
+    public PlayerController(PlayerService playerService, PlayerRepository playerRepository) {
         this.playerService = playerService;
     }
 
@@ -61,6 +64,17 @@ public class PlayerController {
     public boolean addTeamToPlayer(@PathVariable Long playerId, @PathVariable Long teamId, @RequestBody Map<String, String> requestBody) {
         String pin = requestBody.get("pin");
         return playerService.addPlayerToTeam(playerId, teamId, pin);
+    }
+
+    @DeleteMapping("/{playerId}/teams/{teamId}")
+    public boolean removeTeamFromPlayer(@PathVariable Long playerId, @PathVariable Long teamId) {
+        return playerService.removePlayerFromTeam(playerId, teamId);
+    }
+
+    @GetMapping("/{playerId}/events")
+    public Map<Long, Boolean> getEventsForPlayer(@PathVariable Long playerId) {
+        Optional<Player> player = playerService.getPlayerById(playerId);
+        return player.get().getEventAttendances();
     }
 
 }
