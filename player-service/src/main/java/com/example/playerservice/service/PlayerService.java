@@ -87,5 +87,14 @@ public class PlayerService {
         return false;
     }
 
+    public boolean removePlayerFromTeam(Long playerId, Long teamId) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
+
+        player.getTeamIds().remove(teamId);
+        playerRepository.save(player);
+
+        return true;
+    }
 
 }
