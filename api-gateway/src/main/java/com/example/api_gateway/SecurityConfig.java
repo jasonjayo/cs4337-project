@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS with custom configuration
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/login", "/public/**", "/auth/**", "/oauth2/**").permitAll() // allow public and auth routes
+                        .pathMatchers("/login/**", "/public/**", "/auth/**", "/oauth2/**").permitAll() // allow public and auth routes
                         .anyExchange().authenticated() // protect all other routes
                 )
                 .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Add the JWT filter in the appropriate order

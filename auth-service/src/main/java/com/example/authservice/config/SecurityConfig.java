@@ -22,13 +22,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/oauth2/**").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/", "/login/oauth2/**", "/oauth2/**")
+                                .anyRequest().permitAll()
+//                                .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(googleOAuth2SuccessHandler)
+                                .successHandler(googleOAuth2SuccessHandler)
 //                        .defaultSuccessUrl("/home", true)
                 );
 

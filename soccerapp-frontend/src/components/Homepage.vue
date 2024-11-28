@@ -99,6 +99,7 @@ export default {
   name: "Homepage",
   data() {
     return {
+      baseUrl: window.location.hostname,
       upcomingTrainingSessions: [
         { date: "2024-10-21", time: "10:00 AM", coach: "Coach Li Wei" },
         { date: "2024-10-23", time: "3:00 PM", coach: "Coach Zhang Qiang" },
@@ -121,12 +122,7 @@ export default {
   },
   methods: {
     loginWithGoogle() {
-      // Google OAuth 2.0 login logic
-      window.location.href =
-        "http://127.0.0.1:8080/oauth2/authorization/google";
-    },
-    joinUs() {
-      // Logic to join the club, possibly a registration or contact page
+      window.location.href = `http://${this.baseUrl}:8080/oauth2/authorization/google`;
     },
   },
 };

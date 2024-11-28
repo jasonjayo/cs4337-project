@@ -20,7 +20,10 @@ spring:
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/oauth2/**
+            - Path=/oauth2/**, /login/oauth2/**
+          filters:
+            - PreserveHostHeader
+            - RewritePath=/login/oauth2/(?<remaining>.*), /login/oauth2/${remaining}
 
         - id: event-service
           uri: lb://EVENT-SERVICE
@@ -30,6 +33,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://host.docker.internal:8761/eureka/
+      defaultZone: http://eureka-service:8761/eureka/
   instance:
     prefer-ip-address: false
