@@ -3,7 +3,7 @@ name: Build Microservices
 on:
   pull_request:
     branches:
-      - temp-main
+      - main
 
 jobs:
   build:
