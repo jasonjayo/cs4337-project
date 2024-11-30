@@ -5,6 +5,13 @@ on:
     branches:
       - temp-main
 
+name: Build Microservices
+
+on:
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build:
     name: Build Microservices
@@ -22,19 +29,58 @@ jobs:
           distribution: 'temurin'
           java-version: '23'
 
-      # Iterate through each microservice and build
-      - name: Build and Test Microservices
+      # Build API Gateway
+      - name: Build API Gateway
+        working-directory: ./api-gateway
         run: |
-          services=("api-gateway" "auth-service" "eureka-service" "event-service" "manager-service" "player-service" "team-service")
-          for service in "${services[@]}"; do
-            echo "Building $service..."
-            cd $service
-            chmod +x ./gradlew
-            ./gradlew clean build --no-daemon
-            if [ $? -ne 0 ]; then
-              echo "Build failed for $service"
-              exit 1
-            fi
-            cd ..
-          done
-          echo "All microservices built successfully!"
+          chmod +x ./gradlew
+          ./gradlew clean build --no-daemon
+        if: always()
+
+      # Build Auth Service
+      - name: Build Auth Service
+        working-directory: ./auth-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build --no-daemon
+        if: always()
+
+      # Build Eureka Service
+      - name: Build Eureka Service
+        working-directory: ./eureka-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build --no-daemon
+        if: always()
+
+      # Build Event Service
+      - name: Build Event Service
+        working-directory: ./event-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build --no-daemon
+        if: always()
+
+      # Build Manager Service
+      - name: Build Manager Service
+        working-directory: ./manager-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build --no-daemon
+        if: always()
+
+      # Build Player Service
+      - name: Build Player Service
+        working-directory: ./player-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build --no-daemon
+        if: always()
+
+      # Build Team Service
+      - name: Build Team Service
+        working-directory: ./team-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build --no-daemon
+        if: always()
