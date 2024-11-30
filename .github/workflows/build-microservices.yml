@@ -59,7 +59,7 @@ jobs:
         working-directory: ./player-service
         run: |
           chmod +x ./gradlew
-          ./gradlew clean build -x test--no-daemon > ../player-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+          ./gradlew clean build -x test --no-daemon > ../player-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
 
       # Build Team Service
       - name: Build Team Service
