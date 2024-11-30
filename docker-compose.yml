@@ -21,6 +21,7 @@ services:
       - soccer-app-network
     depends_on:
       - eureka-service
+      - mysql
   #    deploy:
   #      replicas: 2
   #      resources:
@@ -38,6 +39,7 @@ services:
       - soccer-app-network
     depends_on:
       - eureka-service
+      - mysql
   #    deploy:
   #      replicas: 2
   #      resources:
@@ -55,6 +57,7 @@ services:
       - soccer-app-network
     depends_on:
       - eureka-service
+      - mysql
   #    deploy:
   #      replicas: 2
   #      resources:
@@ -96,3 +99,23 @@ services:
       - event-service
       - team-service
       - player-service
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: soccer_app
+    ports:
+      - "3307:3306"
+    networks:
+      - soccer-app-network
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8070:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      PMA_HOST: mysql
+    networks:
+      - soccer-app-network
