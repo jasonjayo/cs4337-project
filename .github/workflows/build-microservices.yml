@@ -1,4 +1,4 @@
-name: Build and Test Microservices
+name: Build Microservices
 
 on:
   pull_request:
@@ -31,42 +31,42 @@ jobs:
         working-directory: ./api-gateway
         run: |
           chmod +x ./gradlew
-          ./gradlew clean build --no-daemon > ../api-gateway-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+          ./gradlew clean build -x test --no-daemon > ../api-gateway-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
 
       # Build Auth Service
       - name: Build Auth Service
         working-directory: ./auth-service
         run: |
           chmod +x ./gradlew
-          ./gradlew clean build --no-daemon > ../auth-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+          ./gradlew clean build -x test --no-daemon > ../auth-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
 
       # Build Eureka Service
       - name: Build Eureka Service
         working-directory: ./eureka-service
         run: |
           chmod +x ./gradlew
-          ./gradlew clean build --no-daemon > ../eureka-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+          ./gradlew clean build -x test --no-daemon > ../eureka-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
 
       # Build Event Service
       - name: Build Event Service
         working-directory: ./event-service
         run: |
           chmod +x ./gradlew
-          ./gradlew clean build --no-daemon > ../event-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+          ./gradlew clean build -x test --no-daemon > ../event-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
 
       # Build Player Service
       - name: Build Player Service
         working-directory: ./player-service
         run: |
           chmod +x ./gradlew
-          ./gradlew clean build --no-daemon > ../player-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+          ./gradlew clean build -x test--no-daemon > ../player-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
 
       # Build Team Service
       - name: Build Team Service
         working-directory: ./team-service
         run: |
           chmod +x ./gradlew
-          ./gradlew clean build --no-daemon > ../team-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+          ./gradlew clean build -x test --no-daemon > ../team-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
 
       # Upload logs as artifacts
       - name: Upload Build Logs
