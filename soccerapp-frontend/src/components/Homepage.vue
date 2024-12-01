@@ -161,7 +161,6 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  width: 100vw;
   overflow: hidden;
   max-width: 1200px;
   height: 60vh;
