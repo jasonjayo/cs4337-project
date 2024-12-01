@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/events")
@@ -18,8 +17,25 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping
-    public List<Event> getAllEvents() {
-        return eventService.getAllEvents();
+    public Map<String, Object> getAllEvents() {
+        List<Event> events = eventService.getAllEvents();
+
+        List<Map<String, Integer>> attendanceStats = new ArrayList<>();
+        for (Event event : events) {
+            List<AttendanceDTO> attendances = eventService.getAttendanceByEvent(event.getEvent_id());
+            long attendingCount = attendances.stream()
+                    .filter(attendance -> attendance.getStatus().equals("true"))
+                    .count();
+            long notAttendingCount = attendances.size() - attendingCount;
+            attendanceStats.add(Map.of(
+                    "attending", (int) attendingCount,
+                    "notAttending", (int) notAttendingCount
+            ));
+        }
+        return Map.of(
+                "events", events,
+                "attendanceStats", attendanceStats
+        );
     }
 
     @GetMapping("/{id}")

@@ -22,16 +22,26 @@
   <p>Here's a list of your upcoming events.</p>
 
   <ul class="my-events">
-    <li class="event" v-for="event in myEvents">
+    <li class="event" v-for="event in myEvents" :key="event.event_id">
       <div class="material-symbols-outlined event-icon">event</div>
       <div>
-        <h2 class="event-title">{{ event.description }}</h2>
+        <h2 class="event-title">{{ event.title }}</h2>
         <div>
           <b>{{ event.teamName }}</b>
         </div>
-        <div>{{ formatDate(event.eventDate) }}</div>
+        <p>{{ event.description }}</p>
+        <div>
+          {{ formatDateTime(event.eventDate, event.startTime, event.endTime) }}
+        </div>
+        <div class="attendance-stats">
+          <span class="material-symbols-outlined" title="Attending">check</span
+          >{{ event.attending }}
+          <span class="material-symbols-outlined" title="Not attending"
+            >close</span
+          >{{ event.notAttending }}
+        </div>
       </div>
-      <div>
+      <div class="event-buttons">
         <button
           class="attend-btn"
           :data-event-id="event.event_id"
@@ -45,6 +55,14 @@
           <div v-else>
             <span class="material-symbols-outlined">calendar_add_on</span>Attend
           </div>
+        </button>
+
+        <button
+          class="delete-btn"
+          :data-event-id="event.event_id"
+          @click="deleteEvent"
+        >
+          <span class="material-symbols-outlined">delete</span>Delete
         </button>
       </div>
     </li>
@@ -81,6 +99,7 @@ export default {
       teams: [],
       myTeams: [],
       availableTeams: [],
+      events: [],
       myEvents: [],
       players: [],
       myAttendance: [],
@@ -179,21 +198,28 @@ export default {
     },
     getMyEvents() {
       this.myEvents = [];
-      this.myTeams.forEach((team) => {
-        fetch(`http://${this.baseUrl}:8080/api/events/team/${team.teamId}`, {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-          .then(this.checkStatusCode)
-          .then((res) => res.json())
-          .then((events) => {
-            events.forEach((event) => {
-              event.teamName = team.teamName;
-            });
-            this.myEvents.push(...events);
+      let myTeamIds = this.myTeams.map((team) => team.teamId);
+      fetch(`http://${this.baseUrl}:8080/api/events`, {
+        headers: {
+          Authorization: "Bearer " + this.token,
+        },
+      })
+        .then(this.checkStatusCode)
+        .then((res) => res.json())
+        .then((res) => {
+          let events = res.events;
+          let attendance = res.attendanceStats;
+          events.forEach((event, i) => {
+            event.teamName = this.teams.find(
+              (team) => team.teamId === event.teamId
+            ).teamName;
+            event.attending = attendance[i].attending;
+            event.notAttending = attendance[i].notAttending;
           });
-      });
+          this.myEvents.push(
+            ...events.filter((event) => myTeamIds.includes(event.teamId))
+          );
+        });
       this.getMyAttendance();
     },
     getMyAttendance() {
@@ -206,16 +232,35 @@ export default {
         .then((res) => res.json())
         .then((myAttendance) => (this.myAttendance = myAttendance));
     },
-    formatDate(dateStr) {
-      const date = new Date(dateStr);
-      const options = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      };
-      return date.toLocaleString("en-IE", options);
+    formatDateTime(dateStr, startTime, endTime) {
+      if ((dateStr != null) & (startTime != null) & (endTime != null)) {
+        const startDateTime = new Date(`${dateStr}T${startTime}`);
+        const endDateTime = new Date(`${dateStr}T${endTime}`);
+
+        const timeFormat = {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        };
+
+        const dateTimeFormatter = new Intl.DateTimeFormat("en-IE", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          ...timeFormat,
+        });
+        const timeFormatter = new Intl.DateTimeFormat("en-IE", {
+          ...timeFormat,
+        });
+
+        return (
+          dateTimeFormatter.format(startDateTime) +
+          " until " +
+          timeFormatter.format(endDateTime)
+        );
+      } else {
+        return "No date/time info. provided by organiser.";
+      }
     },
     checkStatusCode(res) {
       if (res.status === 401) {
@@ -228,7 +273,6 @@ export default {
       const eventId = e.currentTarget.getAttribute("data-event-id"),
         current_status =
           e.currentTarget.getAttribute("data-status") === "true" ? true : false;
-      console.log(current_status);
       fetch(
         `http://${this.baseUrl}:8080/api/events/${eventId}/attendance/${
           this.id
@@ -239,13 +283,22 @@ export default {
           },
           method: "POST",
         }
-      ).then(() => this.getMyAttendance());
+      ).then(() => this.getMyEvents());
     },
     checkMyAttendance(eventId) {
       if (eventId in this.myAttendance) {
         return this.myAttendance[eventId];
       }
       return false;
+    },
+    deleteEvent(e) {
+      const eventId = e.currentTarget.getAttribute("data-event-id");
+      fetch(`http://${this.baseUrl}:8080/api/events/${eventId}`, {
+        headers: {
+          Authorization: "Bearer " + this.token,
+        },
+        method: "DELETE",
+      }).then(() => this.getMyEvents());
     },
   },
 };
@@ -267,7 +320,8 @@ export default {
   justify-content: space-between;
 }
 .team button,
-.attend-btn {
+.attend-btn,
+.delete-btn {
   align-self: flex-end;
   text-transform: uppercase;
   appearance: none;
@@ -284,11 +338,13 @@ export default {
   color: #fff;
   background-color: #4fc3f7;
 }
-.attend-btn {
+.attend-btn,
+.delete-btn {
   background: #686868;
   // border: 0.2em solid;
   padding: 0.75em 1em;
   color: inherit;
+  margin: 0 0.5em;
 }
 #profile-pic {
   vertical-align: middle;
@@ -312,9 +368,21 @@ export default {
 }
 .join-team-btn,
 .leave-team-btn,
-.attend-btn > div {
+.attend-btn > div,
+.delete-btn {
   display: flex;
   align-items: center;
   gap: 0 0.75em;
+}
+.attendance-stats .material-symbols-outlined {
+  vertical-align: middle;
+  margin: 0 0.1em;
+}
+.attendance-stats {
+  margin-top: 0.75em;
+  cursor: default;
+}
+.event-buttons {
+  display: flex;
 }
 </style>

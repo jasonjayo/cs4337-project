@@ -17,6 +17,11 @@
             >Dashboard</router-link
           >
         </li>
+        <li>
+          <router-link to="/create-event" class="nav-button"
+            >Create Event</router-link
+          >
+        </li>
       </ul>
     </nav>
   </header>
