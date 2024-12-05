@@ -8,7 +8,7 @@
           src="@/assets/logo.png"
           style="width: 100px; height: auto"
         />
-        <!-- <span>Soccer App</span> -->
+        <span id="logo-name">Soccer App</span>
       </div>
       <ul class="nav-links">
         <li><router-link to="/" class="nav-button">Home</router-link></li>
@@ -16,6 +16,9 @@
           <router-link to="/dashboard" class="nav-button"
             >Dashboard</router-link
           >
+        </li>
+        <li>
+          <router-link to="/events" class="nav-button">Events</router-link>
         </li>
         <li>
           <router-link to="/create-event" class="nav-button"
@@ -26,7 +29,6 @@
     </nav>
   </header>
 
-  <!-- 用于显示不同路由的内容 -->
   <router-view />
 </template>
 
@@ -37,7 +39,6 @@ export default {
 </script>
 
 <style scoped>
-/* 可以在这里加入你的样式 */
 .navbar {
   width: 100%;
   max-width: 1440px;
@@ -110,5 +111,11 @@ export default {
 .login-button:hover {
   background-color: #0056b3;
   transform: translateY(-2px);
+}
+#logo-name {
+  font-size: 2em;
+  font-weight: bold;
+  margin-left: 0.5em;
+  text-transform: uppercase;
 }
 </style>
