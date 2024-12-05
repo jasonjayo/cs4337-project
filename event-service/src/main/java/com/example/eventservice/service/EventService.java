@@ -52,6 +52,7 @@ public class EventService {
             existingEvent.setEndTime(updatedEvent.getEndTime());
             existingEvent.setLocation(updatedEvent.getLocation());
             existingEvent.setDescription(updatedEvent.getDescription());
+            existingEvent.setEventType(updatedEvent.getEventType());
             return eventRepository.save(existingEvent);
         } else {
             return null;

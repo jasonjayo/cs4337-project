@@ -13,24 +13,25 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.util.Optional;
 
 import com.example.shared.dto.PlayerDTO;
 
+/*
+    Deal with successful authentication through OAuth
+ */
 
 @Component
 public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    private PlayerClient playerClient;
+    private PlayerClient playerClient; // feign client for interservice communication
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        if (authentication instanceof OAuth2AuthenticationToken) {
-            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
+                                        Authentication authentication) throws ServletException {
+        if (authentication instanceof OAuth2AuthenticationToken token) {
 
+            // get info from Google token
             String email = token.getPrincipal().getAttributes().get("email").toString();
             String first_name = token.getPrincipal().getAttributes().get("given_name").toString();
             String google_id = token.getPrincipal().getAttributes().get("sub").toString();
@@ -38,35 +39,41 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
             int player_id;
 
+            // TODO test this
             try {
+                // if existing player, get ID
                 PlayerDTO existing_player = playerClient.getPlayerByGoogleId(google_id);
                 player_id = existing_player.getPlayerId();
             } catch (FeignException.NotFound e) {
-                // Create PlayerDTO and send it to the player service
+                // if new player, create record in our DB
                 PlayerDTO playerDTO = new PlayerDTO();
                 playerDTO.setGoogleId(google_id);
                 playerDTO.setPlayerName(first_name);
 
-                // Call the player service to create a new player entry
+                // call player service to create a new player entry (feign client, interservice communication)
                 PlayerDTO player = playerClient.createPlayer(playerDTO);
                 player_id = player.getPlayerId();
             }
 
             try {
+                // now using data from the Google token, we generate our own JWT token to give back to user
+                // this will be used for future requests
+                // we'll store the email, first name and player ID in the contents of this JWT token
                 String jwtToken = JwtUtils.generateToken(email, first_name, player_id);
 
-                // Redirect to the frontend with the correct URL
-                // Using the frontend container name and port in the Docker setup
+                // next redirect user back to our frontend
                 String frontendUrl = "http://127.0.0.1:5173/oauth2/redirect";
 
-                // Construct the redirection URL with JWT and profile picture
+                // pass the token and profile pic URL in the URL params so they can be processed by frontend
                 String redirectUrl = frontendUrl + "?token=" + jwtToken + "&profile_pic=" + profile_pic;
 
+                // and finally execute the redirect
                 response.sendRedirect(redirectUrl);
             } catch (Exception e) {
                 throw new ServletException("Error generating JWT token", e);
             }
         } else {
+            // unexpected object, not an OAuth token so cannot proceed
             throw new ServletException("Authentication object is not of type OAuth2AuthenticationToken");
         }
     }

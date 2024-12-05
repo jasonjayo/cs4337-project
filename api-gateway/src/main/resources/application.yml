@@ -21,9 +21,9 @@ spring:
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/oauth2/**, /login/oauth2/**
-          filters:
-            - PreserveHostHeader
-            - RewritePath=/login/oauth2/(?<remaining>.*), /login/oauth2/${remaining}
+        #          filters:
+        #            - PreserveHostHeader
+        #            - RewritePath=/login/oauth2/(?<remaining>.*), /login/oauth2/${remaining}
 
         - id: event-service
           uri: lb://EVENT-SERVICE

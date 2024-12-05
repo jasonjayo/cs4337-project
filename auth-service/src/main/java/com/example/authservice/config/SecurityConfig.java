@@ -23,13 +23,12 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/", "/login/oauth2/**", "/oauth2/**")
                                 .anyRequest().permitAll()
-//                                .anyRequest().authenticated()
+                        // requests must be allowed to auth service even if not
+                        // authenticated, else would be impossible to become authenticated
                 )
                 .oauth2Login(oauth2 -> oauth2
-                                .successHandler(googleOAuth2SuccessHandler)
-//                        .defaultSuccessUrl("/home", true)
+                        .successHandler(googleOAuth2SuccessHandler) // on successful OAuth 2 login
                 );
 
         return http.build();
