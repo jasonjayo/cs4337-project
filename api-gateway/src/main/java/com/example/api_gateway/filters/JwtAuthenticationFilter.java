@@ -14,9 +14,14 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
+/*
+    Purpose of this filter is validate the integrity of JWT token in the Authorization header
+ */
 @Component
 public class JwtAuthenticationFilter implements WebFilter {
 
+    // exchange is essentially the current HTTP request we're processing
+    // chain is the chain of filters we'll apply to the request
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
@@ -26,30 +31,36 @@ public class JwtAuthenticationFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
+        // get Authorization header
         String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
+        // check for missing auth header and invalid value
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+            String token = authHeader.substring(7); // get token, substring to remove Bearer at start
             try {
                 Claims claims = JwtUtils.parseToken(token);
                 String username = claims.getSubject();
 
-                // Set up auth token
+                // create authentication object to represent authenticated user
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(username, null, null);
-
+                // create new security context
+                // this security context represents the security info for this request, hence why it uses
+                // the auth object from above.
                 SecurityContext securityContext = new SecurityContextImpl(authentication);
 
                 // Set the SecurityContext in the reactive context
                 return chain.filter(exchange)
+                        // write to context to ensure rest of chain for the request sees user as authenticated
                         .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(securityContext)));
 
             } catch (Exception e) {
+                // return 401
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
         } else {
-            // No token / invalid format
+            // no token / invalid format -> return 401
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
