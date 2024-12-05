@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.sql.Timestamp;
 
+/**
+ * Entity class representing the Attendance table in the database.
+ * This class maps to a database table and holds attendance information for events.
+ */
 @Entity
 @Data
 @AllArgsConstructor
@@ -26,7 +30,13 @@ public class Attendance {
     @Column(nullable = false)
     private Timestamp timestamp;
 
-    // Custom constructor for specific fields
+    /**
+     * Custom constructor to initialize an Attendance object with eventId and playerId.
+     * Sets default values for status and timestamp.
+     * 
+     * @param eventId The ID of the event.
+     * @param playerId The ID of the player.
+     */
     public Attendance(Long eventId, Long playerId) {
         this.eventId = eventId;
         this.playerId = playerId;
