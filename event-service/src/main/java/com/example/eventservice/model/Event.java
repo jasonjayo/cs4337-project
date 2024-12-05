@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
+/**
+ * Entity class representing the Event table in the database.
+ * This class maps to a database table and stores event-related details.
+ */
 @Entity
 @Data
 @AllArgsConstructor

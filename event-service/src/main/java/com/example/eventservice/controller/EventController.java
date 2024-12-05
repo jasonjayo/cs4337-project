@@ -16,10 +16,16 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    /**
+     * Retrieve all events along with their attendance statistics.
+     * @return A map containing the list of events and their corresponding attendance stats.
+     */
     @GetMapping
     public Map<String, Object> getAllEvents() {
+        // Fetch all events
         List<Event> events = eventService.getAllEvents();
 
+        // Prepare attendance statistics for each event
         List<Map<String, Integer>> attendanceStats = new ArrayList<>();
         for (Event event : events) {
             List<AttendanceDTO> attendances = eventService.getAttendanceByEvent(event.getEvent_id());
@@ -38,17 +44,33 @@ public class EventController {
         );
     }
 
+    /**
+     * Retrieve an event by its ID.
+     * @param id The ID of the event.
+     * @return The event if found, or a 404 status if not found.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
         Optional<Event> event = eventService.getEventById(id);
         return event.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Create a new event.
+     * @param event The event object to create.
+     * @return The created event.
+     */
     @PostMapping
     public Event createEvent(@RequestBody Event event) {
         return eventService.createEvent(event);
     }
 
+    /**
+     * Update an existing event by its ID.
+     * @param id The ID of the event to update.
+     * @param updatedEvent The updated event details.
+     * @return The updated event, or a 404 status if the event is not found.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
         Event event = eventService.updateEvent(id, updatedEvent);
@@ -59,13 +81,24 @@ public class EventController {
         }
     }
 
+    /**
+     * Delete an event by its ID.
+     * @param id The ID of the event to delete.
+     * @return A 204 status if the deletion is successful.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }
 
-    // Endpoint to update or mark a player's attendance status for a specific event
+    /**
+     * Update or mark a player's attendance status for a specific event.
+     * @param eventId The ID of the event.
+     * @param playerId The ID of the player.
+     * @param status The attendance status ("true" or "false").
+     * @return A success message upon updating the attendance.
+     */
     @PostMapping("/{eventId}/attendance/{playerId}")
     public ResponseEntity<String> updateAttendance(
             @PathVariable Long eventId,
@@ -75,13 +108,22 @@ public class EventController {
         return ResponseEntity.ok("Attendance status updated successfully.");
     }
 
-    // Endpoint to retrieve attendance for a specific event
+    /**
+     * Retrieve the attendance list for a specific event.
+     * @param eventId The ID of the event.
+     * @return A list of attendance records for the event.
+     */
     @GetMapping("/{eventId}/attendance")
     public ResponseEntity<List<AttendanceDTO>> getAttendanceByEvent(@PathVariable Long eventId) {
         List<AttendanceDTO> attendanceList = eventService.getAttendanceByEvent(eventId);
         return ResponseEntity.ok(attendanceList);
     }
 
+    /**
+     * Retrieve all events associated with a specific team.
+     * @param teamId The ID of the team.
+     * @return A list of events for the team.
+     */
     @GetMapping("/team/{teamId}")
     public ResponseEntity<List<Event>> getEventsForTeam(@PathVariable Long teamId) {
         List<Event> events = eventService.getEventsForTeam(teamId);

@@ -10,5 +10,12 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
+
+    /**
+     * Find all events associated with a specific team.
+     *
+     * @param teamId The ID of the team.
+     * @return A list of Event objects associated with the specified team.
+     */
     List<Event> findByTeamId(Long teamId);
 }

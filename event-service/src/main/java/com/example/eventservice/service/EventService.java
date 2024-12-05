@@ -27,22 +27,51 @@ public class EventService {
     @Autowired
     private PlayerClient playerClient;
 
+    /**
+     * Retrieve all events from the database.
+     *
+     * @return A list of all events.
+     */
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
+    /**
+     * Retrieve an event by its ID.
+     *
+     * @param id The ID of the event.
+     * @return An Optional containing the event if found, or empty if not found.
+     */
     public Optional<Event> getEventById(Long id) {
         return eventRepository.findById(id);
     }
 
+    /**
+     * Create a new event and save it to the database.
+     *
+     * @param event The event object to create.
+     * @return The created event.
+     */
     public Event createEvent(Event event) {
         return eventRepository.save(event);
     }
 
+    /**
+     * Delete an event by its ID.
+     *
+     * @param id The ID of the event to delete.
+     */
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
     }
 
+    /**
+     * Update an existing event with new details.
+     *
+     * @param id The ID of the event to update.
+     * @param updatedEvent The updated event object containing new details.
+     * @return The updated event if found, or null if the event does not exist.
+     */
     public Event updateEvent(Long id, Event updatedEvent) {
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
@@ -59,6 +88,13 @@ public class EventService {
         }
     }
 
+    /**
+     * Update or add a player's attendance status for a specific event.
+     *
+     * @param eventId The ID of the event.
+     * @param playerId The ID of the player.
+     * @param status The attendance status (e.g., "true", "false").
+     */
     public void updateAttendance(Long eventId, Long playerId, String status) {
         Attendance attendance = attendanceRepository.findByEventIdAndPlayerId(eventId, playerId)
                 .orElse(new Attendance(eventId, playerId));
@@ -66,6 +102,12 @@ public class EventService {
         attendanceRepository.save(attendance);
     }
 
+    /**
+     * Retrieve attendance details for a specific event.
+     *
+     * @param eventId The ID of the event.
+     * @return A list of AttendanceDTO objects containing player and attendance details.
+     */
     public List<AttendanceDTO> getAttendanceByEvent(Long eventId) {
         List<Attendance> attendances = attendanceRepository.findByEventId(eventId);
         return attendances.stream()
@@ -76,7 +118,12 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    //TODO: fix name retrieval
+    /**
+     * Helper method to fetch a player's name using the PlayerClient.
+     *
+     * @param playerId The ID of the player.
+     * @return The player's name, or "Unknown" if the name could not be retrieved.
+     */
     private String getPlayerName(Long playerId) {
         try {
             return playerClient.getPlayerName(playerId);
@@ -86,6 +133,12 @@ public class EventService {
         }
     }
 
+    /**
+     * Retrieve all events associated with a specific team.
+     *
+     * @param teamId The ID of the team.
+     * @return A list of events for the specified team.
+     */
     public List<Event> getEventsForTeam(Long teamId) {
         return eventRepository.findByTeamId(teamId);
     }
