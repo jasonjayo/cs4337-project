@@ -27,9 +27,9 @@ jobs:
         run: |
           ssh root@165.232.102.66 << 'EOF'
           cd cs4337-project
-          git pull origin jason  # Pull the latest code
-          chmod +x ./gradlew
-          ./gradlew build     # Replace with your build command
+          git pull origin jason
+          chmod 755 ./gradlew
+          ./gradlew build
           docker compose stop
           docker compose up --build -d
           EOF
