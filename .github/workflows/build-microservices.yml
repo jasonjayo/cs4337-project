@@ -1,0 +1,90 @@
+name: Build Microservices
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Microservices
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Set up Java
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+
+      # Initialize failure tracker
+      - name: Initialize Failure Tracker
+        run: echo "FAILURE=false" >> $GITHUB_ENV
+
+      # Build API Gateway
+      - name: Build API Gateway
+        working-directory: ./api-gateway
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test --no-daemon > ../api-gateway-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+
+      # Build Auth Service
+      - name: Build Auth Service
+        working-directory: ./auth-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test --no-daemon > ../auth-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+
+      # Build Eureka Service
+      - name: Build Eureka Service
+        working-directory: ./eureka-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test --no-daemon > ../eureka-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+
+      # Build Event Service
+      - name: Build Event Service
+        working-directory: ./event-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test --no-daemon > ../event-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+
+      # Build Player Service
+      - name: Build Player Service
+        working-directory: ./player-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test --no-daemon > ../player-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+
+      # Build Team Service
+      - name: Build Team Service
+        working-directory: ./team-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test --no-daemon > ../team-service-build.log 2>&1 || echo "FAILURE=true" >> $GITHUB_ENV
+
+      # Upload logs as artifacts
+      - name: Upload Build Logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: |
+            api-gateway-build.log
+            auth-service-build.log
+            eureka-service-build.log
+            event-service-build.log
+            player-service-build.log
+            team-service-build.log
+
+      # Fail job if any microservice failed
+      - name: Fail if Any Build Failed
+        run: |
+          if [ "$FAILURE" = "true" ]; then
+            echo "One or more microservices failed to build. Failing the job."
+            exit 1
+          fi
