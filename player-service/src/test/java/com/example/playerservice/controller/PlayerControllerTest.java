@@ -110,7 +110,7 @@ class PlayerControllerTest {
         doNothing().when(playerService).deletePlayer(1L);
 
         // Act
-        ResponseEntity<Void> response = playerController.deletePlayer(1L);
+        ResponseEntity<Void> response = playerController.deletePlayer(1L, "test.eyJpc3MiOiJmaW5keW91cnNwYXJrLmllIiwic3ViIjoidGVzdEBnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNzMzNDUwODUyLCJmaXJzdF9uYW1lIjoidGVzdCJ9.test");
 
         // Assert
         assertNotNull(response);

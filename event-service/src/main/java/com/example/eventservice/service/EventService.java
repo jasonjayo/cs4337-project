@@ -2,7 +2,6 @@ package com.example.eventservice.service;
 
 import com.example.eventservice.client.PlayerClient;
 import com.example.eventservice.DTO.AttendanceDTO;
-import com.example.eventservice.DTO.PlayerDTO;
 import com.example.eventservice.model.Attendance;
 import com.example.eventservice.repository.AttendanceRepository;
 import com.example.eventservice.repository.EventRepository;
@@ -82,6 +81,7 @@ public class EventService {
             existingEvent.setLocation(updatedEvent.getLocation());
             existingEvent.setDescription(updatedEvent.getDescription());
             existingEvent.setEventType(updatedEvent.getEventType());
+            existingEvent.setTeamId(updatedEvent.getTeamId());
             return eventRepository.save(existingEvent);
         } else {
             return null;

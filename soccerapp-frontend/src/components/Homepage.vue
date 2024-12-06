@@ -1,49 +1,17 @@
 <template>
   <div id="homepage">
-    <!-- Header Navigation -->
-    <!-- <header>
-      <nav class="navbar">
-        <div class="logo">
-          <img
-            alt="Club Logo"
-            class="logo"
-            src="@/assets/logo.png"
-            style="width: 100px; height: auto"
-          />
-          <span>Soccer Club</span>
-        </div>
-        <ul class="nav-links">
-          <li><router-link to="/" class="nav-button">Home</router-link></li>
-          <li>
-            <router-link to="/schedule" class="nav-button"
-              >Training Schedule</router-link
-            >
-          </li>
-          <li>
-            <router-link to="/news" class="nav-button"
-              >News & Events</router-link
-            >
-          </li>
-          <li><router-link to="/team" class="nav-button">Team</router-link></li>
-          <li>
-            <button @click="loginWithGoogle" class="login-button">Login</button>
-          </li>
-        </ul>
-      </nav>
-    </header> -->
-
-    <!-- Hero Section -->
+    <!-- hero section -->
     <section class="hero">
       <div class="hero-content">
         <h1>Soccer App</h1>
         <p>Inspiration, Passion, Team Spirit - Join us and run together</p>
-        <button @click="loginWithGoogle" class="join-button">
+        <button class="join-button" @click="loginWithGoogle">
           Sign in with Google
         </button>
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- footer -->
     <footer>
       <div class="contact-info">
         <p>Phone: +86 123-456-7890</p>
@@ -174,46 +142,6 @@ img {
   height: auto;
 }
 
-.schedule-preview,
-.news-events {
-  background-color: white;
-  margin: 2rem auto;
-  padding: 2rem;
-  width: 100%;
-  max-width: 1440px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.schedule-preview h2,
-.news-events h2 {
-  background-color: white;
-  margin: 2rem 0;
-  padding: 2rem 3rem;
-  width: 100%;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.schedule-item,
-.news-item {
-  margin-bottom: 1.5rem;
-}
-
-.view-more,
-.read-more {
-  display: inline-block;
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.view-more:hover,
-.read-more:hover {
-  color: #0056b3;
-}
-
 footer {
   width: 100%;
   background-color: #002b47;
@@ -239,12 +167,6 @@ footer {
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-
   .hero-content h1 {
     font-size: 2rem;
   }
@@ -256,26 +178,9 @@ footer {
   .join-button {
     font-size: 1rem;
   }
-
-  .schedule-preview,
-  .news-events {
-    padding: 1rem;
-    margin: 1rem;
-  }
 }
+
 @media (min-width: 769px) {
-  .navbar {
-    flex-direction: row;
-    align-items: center;
-    gap: 0;
-  }
-
-  .nav-links {
-    flex-direction: row;
-    gap: 1rem;
-    flex-wrap: nowrap;
-  }
-
   .hero {
     height: 70vh;
   }

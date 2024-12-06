@@ -14,6 +14,12 @@ public class JwtUtils {
 
     private static final String SECRET_KEY = "bf83d510d69b7a6db12aa6c4f2d51ad29945fcc70995041dc5affd897b9e33fc";
 
+    /**
+     * parses JWT token and returns its body for further processing
+     *
+     * @param token the token to parse
+     * @return a Claims object built from the passed token representing its body
+     */
     public static Claims parseToken(String token) {
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 

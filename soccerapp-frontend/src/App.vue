@@ -1,5 +1,7 @@
+<!-- base template for all pages -->
 <template>
   <header>
+    <!-- navbar -->
     <nav class="navbar">
       <div class="logo">
         <img
@@ -29,6 +31,7 @@
     </nav>
   </header>
 
+  <!-- content for current page -->
   <router-view />
 </template>
 

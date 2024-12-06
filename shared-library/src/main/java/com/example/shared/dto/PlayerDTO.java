@@ -1,5 +1,9 @@
 package com.example.shared.dto;
 
+/**
+ * Data transfer object for Player. This allows for effective server-to-server between the player service
+ * and other services.
+ */
 public class PlayerDTO {
 
 

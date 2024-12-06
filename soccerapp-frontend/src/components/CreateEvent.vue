@@ -1,3 +1,4 @@
+<!-- Create Event page, the heavy lifting is handled by the EventForm -->
 <template>
   <h1>Create New Event</h1>
   <EventForm />

@@ -31,6 +31,12 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    /**
+     * sets up a filter to ensure requests are authenticated
+     *
+     * @param http configure application security
+     * @return chain of filters and configurations for CSRF, CORS etc.
+     */
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
@@ -46,6 +52,11 @@ public class SecurityConfig {
                 .build();
     }
 
+    /**
+     * set up our CORS configuration
+     *
+     * @return CORS configuration for use above
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         // set up our cross-origin resource sharing config

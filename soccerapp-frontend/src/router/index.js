@@ -1,3 +1,5 @@
+// here we define the routes for our web app
+
 import { createRouter, createWebHistory } from "vue-router";
 import Homepage from "@/components/Homepage.vue";
 import OAuth2RedirectHandler from "@/components/OAuth2RedirectHandler.vue";

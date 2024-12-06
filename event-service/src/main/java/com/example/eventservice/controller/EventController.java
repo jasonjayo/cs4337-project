@@ -4,10 +4,14 @@ import com.example.eventservice.DTO.AttendanceDTO;
 import com.example.eventservice.model.Event;
 import com.example.eventservice.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
+import static com.example.shared.utils.AuthUtils.checkToken;
+
 
 @RestController
 @RequestMapping("/api/events")
@@ -103,7 +107,11 @@ public class EventController {
     public ResponseEntity<String> updateAttendance(
             @PathVariable Long eventId,
             @PathVariable Long playerId,
-            @RequestParam("status") String status) {
+            @RequestParam("status") String status,
+            @RequestHeader String authorization) {
+        if (!checkToken(authorization, playerId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         eventService.updateAttendance(eventId, playerId, status);
         return ResponseEntity.ok("Attendance status updated successfully.");
     }
