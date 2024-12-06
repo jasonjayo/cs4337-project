@@ -49,6 +49,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:3.9.0'
 
+    implementation project(':shared-library')
+
 }
 
 tasks.named('test') {

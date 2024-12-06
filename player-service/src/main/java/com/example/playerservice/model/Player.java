@@ -26,11 +26,14 @@ public class Player {
 
     @Column(name = "google_id")
     private String googleId;
+
+    // list of the IDs for the teams player is a member of
     @ElementCollection
     @CollectionTable(name = "player_team", joinColumns = @JoinColumn(name = "player_id"))
     @Column(name = "team_id")
     private Set<Long> teamIds;
 
+    // list of attendance records for this player
     @ElementCollection
     @CollectionTable(name = "attendance", joinColumns = @JoinColumn(name = "player_id"))
     @MapKeyColumn(name = "event_id")

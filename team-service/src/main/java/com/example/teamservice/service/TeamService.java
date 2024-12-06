@@ -30,6 +30,26 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
+    /**
+     * update the values of an existing team
+     *
+     * @param id          ID of team to update
+     * @param updatedTeam the updated team
+     * @return the updated team
+     */
+    public Team updateTeam(Long id, Team updatedTeam) {
+        Optional<Team> teamOptional = teamRepository.findById(id);
+        if (teamOptional.isPresent()) {
+            Team existingTeam = teamOptional.get();
+            existingTeam.setTeamName(updatedTeam.getTeamName());
+            existingTeam.setManager(updatedTeam.getManager());
+            existingTeam.setPin(updatedTeam.getPin());
+            return teamRepository.save(existingTeam);
+        } else {
+            return null;
+        }
+    }
+
     public void deleteTeam(Long teamId) {
         teamRepository.deleteById(teamId);
     }

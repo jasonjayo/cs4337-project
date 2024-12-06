@@ -18,6 +18,10 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationSuccessHandler googleOAuth2SuccessHandler;
 
+    /**
+     * @param http configure application security
+     * @return chain specifying how to handle requests (CSRF, auth requirements etc.)
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

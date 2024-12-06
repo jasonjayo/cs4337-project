@@ -14,14 +14,16 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-/*
-    Purpose of this filter is validate the integrity of JWT token in the Authorization header
- */
 @Component
 public class JwtAuthenticationFilter implements WebFilter {
 
-    // exchange is essentially the current HTTP request we're processing
-    // chain is the chain of filters we'll apply to the request
+    /**
+     * Validate the integrity of JWT token in the Authorization header
+     *
+     * @param exchange essentially the current HTTP request we're processing
+     * @param chain    the chain of filters we'll apply to the request
+     * @return signal of operation completing or failing
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();

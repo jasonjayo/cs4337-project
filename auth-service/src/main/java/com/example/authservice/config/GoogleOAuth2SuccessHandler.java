@@ -26,6 +26,13 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     @Autowired
     private PlayerClient playerClient; // feign client for interservice communication
 
+    /**
+     * exchanges token from Google for JWT token
+     *
+     * @param request        the current HTTP request
+     * @param response       the response we'll serve
+     * @param authentication representing user's auth token from Google
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException {
@@ -39,7 +46,6 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
             int player_id;
 
-            // TODO test this
             try {
                 // if existing player, get ID
                 PlayerDTO existing_player = playerClient.getPlayerByGoogleId(google_id);

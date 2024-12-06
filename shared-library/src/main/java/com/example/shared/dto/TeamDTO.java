@@ -1,12 +1,15 @@
 package com.example.shared.dto;
 
+/**
+ * Data transfer object for Team. This allows for effective server-to-server between the team service
+ * and other services.
+ */
 public class TeamDTO {
     private Long teamId;
     private String pin;
     private String teamName;
     private String manager;
 
-    // Constructors, getters, setters
     public TeamDTO() {
     }
 
@@ -32,20 +35,4 @@ public class TeamDTO {
         return manager;
     }
 
-
-//    public Long getId() {
-//        return teamId;
-//    }
-//
-//    public void setId(Long id) {
-//        this.teamId = id;
-//    }
-//
-//    public String getName() {
-//        return teamName;
-//    }
-//
-//    public void setName(String name) {
-//        this.teamName = name;
-//    }
 }

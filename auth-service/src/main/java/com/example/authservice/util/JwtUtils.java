@@ -18,6 +18,14 @@ public class JwtUtils {
     // this secret will be used later in API gateway to validate the integrity of the token when included to
     // authenticate future requests
 
+    /**
+     * generates JWT token
+     *
+     * @param email      user's email (from Google)
+     * @param first_name user's first name (from Google)
+     * @param id         user's ID (our internal ID, not Google's user ID)
+     * @return the generated token
+     */
     public static String generateToken(String email, String first_name, int id) throws Exception {
         JWSSigner signer = new MACSigner(SECRET);
 
