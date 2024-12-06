@@ -22,14 +22,14 @@ services:
     depends_on:
       - eureka-service
       - mysql
-  #    deploy:
-  #      replicas: 2
-  #      resources:
-  #        limits:
-  #          cpus: "0.5"
-  #          memory: "512M"
-  #      restart_policy:
-  #        condition: on-failure
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
+      restart_policy:
+        condition: on-failure
 
   player-service:
     build:
@@ -40,14 +40,14 @@ services:
     depends_on:
       - eureka-service
       - mysql
-  #    deploy:
-  #      replicas: 2
-  #      resources:
-  #        limits:
-  #          cpus: "0.5"
-  #          memory: "512M"
-  #      restart_policy:
-  #        condition: on-failure
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
+      restart_policy:
+        condition: on-failure
 
   event-service:
     build:
@@ -58,14 +58,14 @@ services:
     depends_on:
       - eureka-service
       - mysql
-  #    deploy:
-  #      replicas: 2
-  #      resources:
-  #        limits:
-  #          cpus: "0.5"
-  #          memory: "512M"
-  #      restart_policy:
-  #        condition: on-failure
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
+      restart_policy:
+        condition: on-failure
 
   auth-service:
     build:
@@ -76,14 +76,6 @@ services:
     depends_on:
       - eureka-service
       - player-service
-  #    deploy:
-  #      replicas: 2
-  #      resources:
-  #        limits:
-  #          cpus: "0.5"
-  #          memory: "512M"
-  #      restart_policy:
-  #        condition: on-failure
 
   api-gateway:
     build:
