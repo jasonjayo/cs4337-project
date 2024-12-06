@@ -53,6 +53,7 @@ public class EventService {
             existingEvent.setLocation(updatedEvent.getLocation());
             existingEvent.setDescription(updatedEvent.getDescription());
             existingEvent.setEventType(updatedEvent.getEventType());
+            existingEvent.setTeamId(updatedEvent.getTeamId());
             return eventRepository.save(existingEvent);
         } else {
             return null;
