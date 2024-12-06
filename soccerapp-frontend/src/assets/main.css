@@ -1,5 +1,6 @@
 @import "./base.css";
 
+/* styles for across the app */
 #app {
   width: 1280px;
   margin: 0 auto;
@@ -29,16 +30,3 @@ h2 {
 h1 {
   text-transform: uppercase;
 }
-
-/* @media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */

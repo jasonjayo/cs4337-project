@@ -1,3 +1,4 @@
+<!-- main page for authenticated users -->
 <template>
   <div id="welcome">
     <h1>⚽ Welcome to Soccer App!</h1>
@@ -120,7 +121,7 @@ export default {
   },
   methods: {
     joinTeam(e) {
-      const team_id = e.target.getAttribute("data-team-id");
+      const team_id = e.currentTarget.getAttribute("data-team-id");
       let pin = prompt("Enter team PIN to join:");
 
       fetch(
@@ -175,7 +176,7 @@ export default {
           this.myTeams = profile.teams;
           this.availableTeams = this.teams.filter(
             (team) =>
-              !this.myTeams.some((myTeam) => myTeam.teamId === team.teamId) // only show team player isn't a member of
+              !this.myTeams.some((myTeam) => myTeam.teamId === team.teamId) // only show teams player isn't a member of
           );
         });
     },
@@ -233,7 +234,7 @@ export default {
   display: flex;
   margin-top: 3em;
   justify-content: center;
-  & div {
+  & > div {
     width: 550px;
   }
 }

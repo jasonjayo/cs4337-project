@@ -1,3 +1,4 @@
+<!-- component used for creating new events and modifying existing ones  -->
 <template>
   <p class="form-note">Mandatory fields are marked with a *.</p>
   <form @submit="submitForm" class="form-layout">
@@ -96,6 +97,8 @@ button:hover {
 }
 </style>
 <script>
+import { checkStatusCode } from "../utils";
+
 export default {
   data() {
     return {
@@ -115,13 +118,15 @@ export default {
     };
   },
   props: {
+    // to facilitate modifying existing event, we have a prop to allow us to pass in an existing one
     existingEvent: {
       type: Object,
       required: false,
     },
   },
   watch: {
-    existingEvent(newExisting, oldExisting) {
+    // watch for the case where event we're modifying changes
+    existingEvent(newExisting) {
       if (newExisting) {
         const { event_id, ...remainingValues } = newExisting;
         this.existingId = event_id;
@@ -137,8 +142,10 @@ export default {
         Authorization: "Bearer " + this.token,
       },
     })
+      .then(checkStatusCode)
       .then((res) => res.json())
       .then((teams) => {
+        // we need a teams array for we can display the teams by name in the form instead of just by ID
         teams.forEach((team) => {
           this.teams.push({
             id: team.teamId,
@@ -151,8 +158,8 @@ export default {
   methods: {
     submitForm(e) {
       e.preventDefault();
-      console.log(this.existingId);
       if (this.existingId) {
+        // modifying existing event
         fetch(`http://${this.baseUrl}:8080/api/events/${this.existingId}`, {
           method: "PUT",
           headers: {
@@ -164,9 +171,14 @@ export default {
           if (res.status === 200) {
             alert(`Event ${this.existingId} updated successfully!`);
             location.reload();
+          } else {
+            alert(
+              "Failed to update event. Try refreshing the page to reauthenticate."
+            );
           }
         });
       } else {
+        // creating new event
         fetch(`http://${this.baseUrl}:8080/api/events`, {
           method: "POST",
           headers: {
@@ -177,6 +189,10 @@ export default {
         }).then((res) => {
           if (res.status === 200) {
             alert("New event created successfully!");
+          } else {
+            alert(
+              "Failed to create event. Try refreshing the page to reauthenticate."
+            );
           }
         });
       }

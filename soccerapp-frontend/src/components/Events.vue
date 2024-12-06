@@ -1,3 +1,4 @@
+<!-- page listing out events for player based on their teams -->
 <template>
   <h1>My Events</h1>
   <p>Here's a list of your upcoming events!</p>
@@ -84,7 +85,6 @@
 <script>
 import { checkStatusCode } from "../utils";
 import { jwtDecode } from "jwt-decode";
-import EventForm from "./EventForm.vue";
 
 export default {
   data() {
@@ -95,6 +95,7 @@ export default {
       myEvents: [],
       event: undefined,
       editing: false,
+      myAttendance: {},
     };
   },
   mounted() {
@@ -107,7 +108,7 @@ export default {
         Authorization: "Bearer " + this.token,
       },
     })
-      .then(this.checkStatusCode)
+      .then(checkStatusCode)
       .then((res) => res.json())
       .then((teams) => (this.teams = teams));
 
@@ -125,7 +126,9 @@ export default {
             Authorization: "Bearer " + this.token,
           },
           method: "DELETE",
-        }).then(() => this.getMyEvents());
+        })
+          .then(checkStatusCode)
+          .then(() => this.getMyEvents());
       }
     },
     editEvent(e) {
@@ -155,11 +158,12 @@ export default {
           method: "POST",
         }
       )
+        .then(checkStatusCode)
         .then(() => this.getMyEvents())
         .then(() => {
           setTimeout(() => {
             window.scrollTo(0, scrollY);
-          }, 250);
+          }, 500);
         });
     },
     checkMyAttendance(eventId) {
@@ -169,6 +173,8 @@ export default {
       return false;
     },
     formatDateTime(dateStr, startTime, endTime) {
+      // some events have only date info and no time info
+      // we need to deal with all these cases
       const timeFormat = {
         hour: "2-digit",
         minute: "2-digit",
@@ -219,7 +225,7 @@ export default {
           Authorization: "Bearer " + this.token,
         },
       })
-        .then(this.checkStatusCode)
+        .then(checkStatusCode)
         .then((res) => res.json())
         .then((myAttendance) => (this.myAttendance = myAttendance));
     },
@@ -297,7 +303,6 @@ export default {
   justify-content: flex-end;
   button {
     background: #686868;
-    // border: 0.2em solid;
     padding: 0.75em 1em;
     color: inherit;
     margin: 0 0.5em;
