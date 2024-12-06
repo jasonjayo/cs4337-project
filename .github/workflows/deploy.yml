@@ -1,0 +1,35 @@
+name: Deploy to DigitalOcean Droplet
+
+on:
+  push:
+    branches:
+      - jason
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up SSH
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 165.232.102.66 >> ~/.ssh/known_hosts
+
+      # Step 3: Deploy code to droplet
+      - name: Deploy code
+        run: |
+          ssh root@165.232.102.66 << 'EOF'
+          cd cs4337-project
+          git pull origin jason
+          chmod 755 ./gradlew
+          ./gradlew build
+          docker compose stop
+          docker compose up --build -d
+          EOF
