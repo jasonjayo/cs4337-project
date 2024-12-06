@@ -4,7 +4,6 @@ import com.example.shared.dto.PlayerDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 /**
  * Feign Client. This allows services that need to get data from the player service to do so.

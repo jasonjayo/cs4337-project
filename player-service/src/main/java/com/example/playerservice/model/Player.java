@@ -1,10 +1,8 @@
 package com.example.playerservice.model;
 
 import com.example.shared.dto.TeamDTO;
-import com.example.shared.feign.TeamClient;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
